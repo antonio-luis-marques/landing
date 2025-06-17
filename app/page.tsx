@@ -27,12 +27,13 @@ export default function HomePage() {
   const theme = useTheme();
   const isLaptop = useMediaQuery(theme.breakpoints.up('md'));
 
-  const scroll = (ref: React.RefObject<HTMLDivElement>, direction: 'left' | 'right') => {
-    if (ref.current) {
-      const amount = direction === 'left' ? -300 : 300;
-      ref.current.scrollBy({ left: amount, behavior: 'smooth' });
-    }
-  };
+  const scroll = (ref: React.RefObject<HTMLDivElement | null>, direction: 'left' | 'right') => {
+  if (ref.current) {
+    const amount = direction === 'left' ? -300 : 300;
+    ref.current.scrollBy({ left: amount, behavior: 'smooth' });
+  }
+};
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % backgrounds.length);
