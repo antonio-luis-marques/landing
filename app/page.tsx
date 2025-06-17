@@ -1,103 +1,276 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { Button, Container, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material';
+import Image from 'next/image';
+import bg1 from '../public/bg/bg1.jpg';
+import bg2 from '../public/bg/bg2.jpg';
+import bg3 from '../public/bg/bg3.jpg';
+import photo1 from '../public/done/photo/photo1.jpg';
+import photo2 from '../public/done/photo/photo1.jpg';
+import video1 from '../public/done/videos/video1.jpg';
+import video2 from '../public/done/videos/video1.jpg';
+import { useEffect, useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowBackIosNew, ArrowForwardIos, Email, Facebook, LinkedIn, LocationOn, Phone, PhotoCamera, PlayCircleOutline, Videocam, WhatsApp } from '@mui/icons-material';
+
+
+const backgrounds = [bg1, bg2, bg3];
+const photos = [photo1, photo2, photo1, photo2];
+const videos = [video1, video2, video1, video2];
+
+export default function HomePage() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [activeCard, setActiveCard] = useState<'welcome' | 'portfolio' | 'contact'>('welcome');
+
+  const photoRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLDivElement>(null);
+  const theme = useTheme();
+  const isLaptop = useMediaQuery(theme.breakpoints.up('md'));
+
+  const scroll = (ref: React.RefObject<HTMLDivElement>, direction: 'left' | 'right') => {
+    if (ref.current) {
+      const amount = direction === 'left' ? -300 : 300;
+      ref.current.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % backgrounds.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="relative w-full min-h-screen bg-black">
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      {/* Card Welcome */}
+      <AnimatePresence>
+        {activeCard === 'welcome' && (
+          <motion.div
+            key="welcome"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-0 z-10"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            {/* Background apenas no card de boas-vindas */}
+            <div className="absolute inset-0 -z-10">
+              {backgrounds.map((bg, i) => (
+                <Image
+                  key={i}
+                  src={bg}
+                  alt={`Background ${i}`}
+                  fill
+                  className={`object-cover transition-opacity duration-1000 ${i === currentIndex ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  priority={i === 0}
+                />
+              ))}
+              <div className="absolute inset-0 bg-black/60" />
+            </div>
+            <Container
+              maxWidth="md"
+              className="h-screen flex flex-col items-center justify-center text-center text-white"
+            >
+              <Typography variant="h2" className="!text-4xl md:!text-5xl font-bold">
+                Capturamos Histórias em Cada Frame
+              </Typography>
+              <Typography className="mt-4 text-lg md:text-xl">
+                Produção profissional de fotos e vídeos para sua marca
+              </Typography>
+              <div className="flex gap-4 mt-8">
+                <Button
+                  variant="contained"
+                  onClick={() => setActiveCard('portfolio')}
+                  sx={{
+                    backgroundColor: '#4caf50', // Verde padrão do MUI
+                    '&:hover': {
+                      backgroundColor: '#388e3c', // Verde escuro no hover
+                    },
+                  }}
+                >
+                  Ver Portfólio
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => setActiveCard('contact')}
+                  sx={{
+                    color: '#4caf50',
+                    borderColor: '#4caf50',
+                    '&:hover': {
+                      backgroundColor: 'rgba(76, 175, 80, 0.08)', // verde claro com opacidade
+                      borderColor: '#388e3c',
+                      color: '#388e3c',
+                    },
+                  }}
+                >
+                  Contactar
+                </Button>
+              </div>
+            </Container>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Card Portfólio */}
+      <AnimatePresence>
+        {activeCard === 'portfolio' && (
+          <motion.div
+            key="portfolio"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ duration: 0.6 }}
+            className="relative z-20 px-4 pt-20 pb-10 text-white min-h-screen bg-black"
           >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            <Container maxWidth="md">
+              <div className="flex justify-between items-center mb-6">
+                <Typography variant="h4">Portfólio</Typography>
+                <Button variant="text" color="inherit" onClick={() => setActiveCard('welcome')}>
+                  ⬅ Voltar
+                </Button>
+              </div>
+
+              <div className="flex items-center gap-2 text-white mb-2">
+                <PhotoCamera sx={{ fontSize: 24 }} />
+                <Typography className="text-xl">Trabalhos em Foto</Typography>
+              </div>
+              <div className="relative mb-6">
+                {isLaptop && (
+                  <>
+                    <IconButton
+                      onClick={() => scroll(photoRef, 'left')}
+                      className="absolute top-1/2 left-0 z-10 text-white"
+                      sx={{ transform: 'translateY(-50%)', position: 'absolute' }}
+                    >
+                      <ArrowBackIosNew sx={{ color: 'white' }} />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => scroll(photoRef, 'right')}
+                      className="absolute top-1/2 right-0 z-10 text-white"
+                      sx={{ transform: 'translateY(-50%)', position: 'absolute' }}
+                    >
+                      <ArrowForwardIos sx={{ color: 'white' }}/>
+                    </IconButton>
+                  </>
+                )}
+
+                <div
+                  ref={photoRef}
+                  className="overflow-x-auto whitespace-nowrap scroll-smooth"
+                >
+                  <div className="flex gap-4">
+                    {photos.map((src, i) => (
+                      <Image
+                        key={i}
+                        src={src}
+                        alt={`Foto ${i + 1}`}
+                        width={200}
+                        height={120}
+                        className="rounded-lg shadow-md object-cover hover:scale-105 transition"
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+
+              <div className="flex items-center gap-2">
+                <Videocam sx={{ fontSize: 24, color: 'white' }} />
+                <Typography className="text-xl text-white">Trabalhos em Vídeo</Typography>
+              </div>
+              <div className="relative mb-6">
+                {isLaptop && (
+                  <>
+                    <IconButton
+                      onClick={() => scroll(videoRef, 'left')}
+                      className="absolute top-1/2 left-0 z-10 text-white"
+                      sx={{ transform: 'translateY(-50%)', position: 'absolute' }}
+                    >
+                      <ArrowBackIosNew sx={{ color: 'white' }}/>
+                    </IconButton>
+                    <IconButton
+                      onClick={() => scroll(videoRef, 'right')}
+                      className="absolute top-1/2 right-0 z-10 text-white"
+                      sx={{ transform: 'translateY(-50%)', position:'absolute' }}
+                    >
+                      <ArrowForwardIos sx={{ color: 'white' }}/>
+                    </IconButton>
+                  </>
+                )}
+
+                <div
+                  ref={videoRef}
+                  className="overflow-x-auto whitespace-nowrap scroll-smooth"
+                >
+                  <div className="flex gap-4">
+                    {videos.map((src, i) => (
+                      <div key={i} className="relative group">
+                        <Image
+                          src={src}
+                          alt={`Vídeo ${i + 1}`}
+                          width={200}
+                          height={120}
+                          className="rounded-lg shadow-md object-cover hover:scale-105 transition"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/40 transition">
+                          <PlayCircleOutline sx={{ fontSize: 48, color: 'white' }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+            </Container>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Card Contato */}
+      <AnimatePresence>
+        {activeCard === 'contact' && (
+          <motion.div
+            key="contact"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ duration: 0.6 }}
+            className="relative z-20 px-4 pt-20 pb-10 text-white min-h-screen bg-neutral-900"
+          >
+            <Container maxWidth="sm">
+              <div className="flex justify-between items-center mb-6">
+                <Typography variant="h4">Contactos</Typography>
+                <Button variant="text" color="inherit" onClick={() => setActiveCard('welcome')}>
+                  ⬅ Voltar
+                </Button>
+              </div>
+
+              <div className="space-y-4 text-lg">
+                <div className="flex items-center gap-3">
+                  <Email color="primary" /> contacto@empresa.com
+                </div>
+                <div className="flex items-center gap-3">
+                  <Phone sx={{ color: '#4caf50' }} /> +258 84 000 0000
+                </div>
+                <div className="flex items-center gap-3">
+                  <WhatsApp sx={{ color: '#25d366' }} /> +258 84 000 0000
+                </div>
+                <div className="flex items-center gap-3">
+                  <LocationOn sx={{ color: '#f44336' }} /> Av. Julius Nyerere, Maputo
+                </div>
+                <div className="flex items-center gap-3">
+                  <Facebook sx={{ color: '#1877F2' }} /> facebook.com/empresa
+                </div>
+                <div className="flex items-center gap-3">
+                  <LinkedIn sx={{ color: '#0077B5' }} /> linkedin.com/company/empresa
+                </div>
+              </div>
+            </Container>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
