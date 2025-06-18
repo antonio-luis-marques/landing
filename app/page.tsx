@@ -11,13 +11,20 @@ import video1 from '../public/done/videos/video1.jpg';
 import video2 from '../public/done/videos/video1.jpg';
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowBackIosNew, ArrowForwardIos, Email, Facebook, LinkedIn, LocationOn, Phone, PhotoCamera, PlayCircleOutline, Videocam, WhatsApp } from '@mui/icons-material';
+import { ArrowBackIosNew, ArrowForwardIos, PhotoCamera, PlayCircleOutline, Videocam, WhatsApp } from '@mui/icons-material';
+import Contacts from '@/components/contacts/Contacts';
+import YouTubePlayer from '../components/videoplayer/VideoPlayer';
 
 
 const backgrounds = [bg1, bg2, bg3];
-const photos = [photo1, photo2, photo1, photo2];
+const photos = [photo1, photo2, photo1, photo2, photo1, photo2, photo1, photo2];
 const videos = [video1, video2, video1, video2];
-
+const videoLinks = [
+  'https://www.youtube.com/watch?v=qV-tFfNPsB8',
+  'https://www.youtube.com/watch?v=dYGFJPXs2Rs',
+  'https://www.youtube.com/watch?v=cOwkzEAi4l4',
+  'https://www.youtube.com/watch?v=daeZfKcH6AM'
+];
 export default function HomePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeCard, setActiveCard] = useState<'welcome' | 'portfolio' | 'contact'>('welcome');
@@ -28,11 +35,11 @@ export default function HomePage() {
   const isLaptop = useMediaQuery(theme.breakpoints.up('md'));
 
   const scroll = (ref: React.RefObject<HTMLDivElement | null>, direction: 'left' | 'right') => {
-  if (ref.current) {
-    const amount = direction === 'left' ? -300 : 300;
-    ref.current.scrollBy({ left: amount, behavior: 'smooth' });
-  }
-};
+    if (ref.current) {
+      const amount = direction === 'left' ? -300 : 300;
+      ref.current.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -152,7 +159,7 @@ export default function HomePage() {
                       className="absolute top-1/2 right-0 z-10 text-white"
                       sx={{ transform: 'translateY(-50%)', position: 'absolute' }}
                     >
-                      <ArrowForwardIos sx={{ color: 'white' }}/>
+                      <ArrowForwardIos sx={{ color: 'white' }} />
                     </IconButton>
                   </>
                 )}
@@ -189,14 +196,14 @@ export default function HomePage() {
                       className="absolute top-1/2 left-0 z-10 text-white"
                       sx={{ transform: 'translateY(-50%)', position: 'absolute' }}
                     >
-                      <ArrowBackIosNew sx={{ color: 'white' }}/>
+                      <ArrowBackIosNew sx={{ color: 'white' }} />
                     </IconButton>
                     <IconButton
                       onClick={() => scroll(videoRef, 'right')}
                       className="absolute top-1/2 right-0 z-10 text-white"
-                      sx={{ transform: 'translateY(-50%)', position:'absolute' }}
+                      sx={{ transform: 'translateY(-50%)', position: 'absolute' }}
                     >
-                      <ArrowForwardIos sx={{ color: 'white' }}/>
+                      <ArrowForwardIos sx={{ color: 'white' }} />
                     </IconButton>
                   </>
                 )}
@@ -205,21 +212,13 @@ export default function HomePage() {
                   ref={videoRef}
                   className="overflow-x-auto whitespace-nowrap scroll-smooth"
                 >
-                  <div className="flex gap-4">
-                    {videos.map((src, i) => (
-                      <div key={i} className="relative group">
-                        <Image
-                          src={src}
-                          alt={`Vídeo ${i + 1}`}
-                          width={200}
-                          height={120}
-                          className="rounded-lg shadow-md object-cover hover:scale-105 transition"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/40 transition">
-                          <PlayCircleOutline sx={{ fontSize: 48, color: 'white' }} />
-                        </div>
-                      </div>
+                  <div className="flex gap-4 relative">
+                    {videoLinks.map((url, i) => (
+                      // <div key={url} className="w-72 overflow-hidden">
+                        <YouTubePlayer key={url}  youtubeUrl={url} />
+                      // </div>
                     ))}
+
                   </div>
                 </div>
               </div>
@@ -230,48 +229,7 @@ export default function HomePage() {
       </AnimatePresence>
 
       {/* Card Contato */}
-      <AnimatePresence>
-        {activeCard === 'contact' && (
-          <motion.div
-            key="contact"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 40 }}
-            transition={{ duration: 0.6 }}
-            className="relative z-20 px-4 pt-20 pb-10 text-white min-h-screen bg-neutral-900"
-          >
-            <Container maxWidth="sm">
-              <div className="flex justify-between items-center mb-6">
-                <Typography variant="h4">Contactos</Typography>
-                <Button variant="text" color="inherit" onClick={() => setActiveCard('welcome')}>
-                  ⬅ Voltar
-                </Button>
-              </div>
-
-              <div className="space-y-4 text-lg">
-                <div className="flex items-center gap-3">
-                  <Email color="primary" /> contacto@empresa.com
-                </div>
-                <div className="flex items-center gap-3">
-                  <Phone sx={{ color: '#4caf50' }} /> +258 84 000 0000
-                </div>
-                <div className="flex items-center gap-3">
-                  <WhatsApp sx={{ color: '#25d366' }} /> +258 84 000 0000
-                </div>
-                <div className="flex items-center gap-3">
-                  <LocationOn sx={{ color: '#f44336' }} /> Av. Julius Nyerere, Maputo
-                </div>
-                <div className="flex items-center gap-3">
-                  <Facebook sx={{ color: '#1877F2' }} /> facebook.com/empresa
-                </div>
-                <div className="flex items-center gap-3">
-                  <LinkedIn sx={{ color: '#0077B5' }} /> linkedin.com/company/empresa
-                </div>
-              </div>
-            </Container>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <Contacts activeCard={activeCard} setActiveCard={setActiveCard} />
     </div>
   );
 }
