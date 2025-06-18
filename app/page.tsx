@@ -7,8 +7,7 @@ import bg2 from '../public/bg/bg2.jpg';
 import bg3 from '../public/bg/bg3.jpg';
 import photo1 from '../public/done/photo/photo1.jpg';
 import photo2 from '../public/done/photo/photo1.jpg';
-import video1 from '../public/done/videos/video1.jpg';
-import video2 from '../public/done/videos/video1.jpg';
+
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowBackIosNew, ArrowForwardIos, PhotoCamera, Videocam } from '@mui/icons-material';
