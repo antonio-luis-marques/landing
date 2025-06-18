@@ -1,6 +1,7 @@
 'use client';
 
-import { Card, CardContent } from '@mui/material';
+import { YouTube } from '@mui/icons-material';
+import { Card, CardContent, Skeleton } from '@mui/material';
 
 export interface YouTubePlayerProps {
   youtubeUrl: string;
@@ -42,6 +43,26 @@ export default function YouTubePlayer({
             overflow: 'hidden',
           }}
         >
+          <Skeleton
+            variant="rectangular"
+            sx={{
+              width: '100%',
+              height: '100%',
+              borderRadius: 2,
+              backgroundColor: '#333',
+            }}
+          />
+          <YouTube
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              fontSize: 64,
+              color: 'rgba(255, 255, 255, 0.2)', // ícone branco suave e neutro
+              opacity: 0.6,
+            }}
+          />
           <iframe
             src={embedUrl}
             title={title}
