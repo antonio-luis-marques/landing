@@ -18,7 +18,6 @@ import YouTubePlayer from '../components/videoplayer/VideoPlayer';
 
 const backgrounds = [bg1, bg2, bg3];
 const photos = [photo1, photo2, photo1, photo2, photo1, photo2, photo1, photo2];
-const videos = [video1, video2, video1, video2];
 const videoLinks = [
   'https://www.youtube.com/watch?v=qV-tFfNPsB8',
   'https://www.youtube.com/watch?v=dYGFJPXs2Rs',
@@ -213,7 +212,7 @@ export default function HomePage() {
                   className="overflow-x-auto whitespace-nowrap scroll-smooth"
                 >
                   <div className="flex gap-4 relative">
-                    {videoLinks.map((url, i) => (
+                    {videoLinks.map((url) => (
                       // <div key={url} className="w-72 overflow-hidden">
                         <YouTubePlayer key={url}  youtubeUrl={url} />
                       // </div>
