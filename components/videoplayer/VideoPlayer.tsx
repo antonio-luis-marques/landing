@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent } from '@mui/material';
 
 export interface YouTubePlayerProps {
   youtubeUrl: string;

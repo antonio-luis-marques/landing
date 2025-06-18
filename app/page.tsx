@@ -11,7 +11,7 @@ import video1 from '../public/done/videos/video1.jpg';
 import video2 from '../public/done/videos/video1.jpg';
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowBackIosNew, ArrowForwardIos, PhotoCamera, PlayCircleOutline, Videocam, WhatsApp } from '@mui/icons-material';
+import { ArrowBackIosNew, ArrowForwardIos, PhotoCamera, Videocam } from '@mui/icons-material';
 import Contacts from '@/components/contacts/Contacts';
 import YouTubePlayer from '../components/videoplayer/VideoPlayer';
 
